@@ -1,24 +1,51 @@
-"use client"
+"use client";
 
-const getHostnameFromUrl = (url) => {
-  if (!url) return ""
+const getHostnameFromUrl = (url: string) => {
+  if (!url) return "";
   try {
     // Add protocol if missing
-    const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`
-    const hostname = new URL(urlWithProtocol).hostname
-    return hostname.replace("www.", "") // Remove www. prefix
+    const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
+    const hostname = new URL(urlWithProtocol).hostname;
+    return hostname.replace("www.", ""); // Remove www. prefix
   } catch {
-    return url // Return original if URL parsing fails
+    return url; // Return original if URL parsing fails
   }
+};
+
+const handleLinkClick = (url: string) => {
+  if (!url) return;
+  const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
+  window.open(urlWithProtocol, "_blank");
+};
+
+export interface ResumeData {
+  personalInfo: {
+    name: string;
+    location: string;
+    phone: string;
+    email: string;
+    links: { url: string; label: string }[];
+  };
+  summary: string;
+  experience: { title: string; period: string; description: string }[];
+  education: { degree: string; institution: string; period: string }[];
+  skills: {
+    technical: string[];
+    languages: { language: string; level: string }[];
+  };
 }
 
-const handleLinkClick = (url) => {
-  if (!url) return
-  const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`
-  window.open(urlWithProtocol, "_blank")
-}
-
-export default function ResumePreview({ data, onSectionClick }) {
+export default function ResumePreview({
+  data,
+  onSectionClick,
+}: {
+  data: ResumeData;
+  onSectionClick: (
+    section: string,
+    index?: number | null,
+    field?: string
+  ) => void;
+}) {
   return (
     <div
       id="resume-preview"
@@ -34,12 +61,15 @@ export default function ResumePreview({ data, onSectionClick }) {
       }}
     >
       <div className="border-2 border-black p-6 h-full">
-        <header className="text-center mb-6 cursor-pointer hover:bg-gray-50" onClick={() => onSectionClick("personal")}>
+        <header
+          className="text-center mb-6 cursor-pointer hover:bg-gray-50"
+          onClick={() => onSectionClick("personal")}
+        >
           <h1
             className="text-3xl font-bold mb-2"
             onClick={(e) => {
-              e.stopPropagation()
-              onSectionClick("personal", null, "name")
+              e.stopPropagation();
+              onSectionClick("personal", null, "name");
             }}
           >
             {data.personalInfo.name}
@@ -49,8 +79,8 @@ export default function ResumePreview({ data, onSectionClick }) {
               <span
                 className="hover:underline"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  onSectionClick("personal", null, "location")
+                  e.stopPropagation();
+                  onSectionClick("personal", null, "location");
                 }}
               >
                 {data.personalInfo.location}
@@ -61,20 +91,22 @@ export default function ResumePreview({ data, onSectionClick }) {
               <span
                 className="hover:underline"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  onSectionClick("personal", null, "phone")
+                  e.stopPropagation();
+                  onSectionClick("personal", null, "phone");
                 }}
               >
                 {data.personalInfo.phone}
               </span>
             )}
-            {(data.personalInfo.location || data.personalInfo.phone) && data.personalInfo.email && " • "}
+            {(data.personalInfo.location || data.personalInfo.phone) &&
+              data.personalInfo.email &&
+              " • "}
             {data.personalInfo.email && (
               <span
                 className="hover:underline"
                 onClick={(e) => {
-                  e.stopPropagation()
-                  onSectionClick("personal", null, "email")
+                  e.stopPropagation();
+                  onSectionClick("personal", null, "email");
                 }}
               >
                 {data.personalInfo.email}
@@ -92,18 +124,18 @@ export default function ResumePreview({ data, onSectionClick }) {
                           <span
                             className="hover:underline cursor-pointer text-blue-600"
                             onClick={(e) => {
-                              e.stopPropagation()
-                              handleLinkClick(link.url)
+                              e.stopPropagation();
+                              handleLinkClick(link.url);
                             }}
                             onDoubleClick={(e) => {
-                              e.stopPropagation()
-                              onSectionClick("personal", null, "links")
+                              e.stopPropagation();
+                              onSectionClick("personal", null, "links");
                             }}
                           >
                             {getHostnameFromUrl(link.url)}
                           </span>
                         </span>
-                      ),
+                      )
                   )}
                 </span>
               </>
@@ -115,7 +147,10 @@ export default function ResumePreview({ data, onSectionClick }) {
 
         {data.summary && (
           <>
-            <section className="mb-6 cursor-pointer hover:bg-gray-50" onClick={() => onSectionClick("summary")}>
+            <section
+              className="mb-6 cursor-pointer hover:bg-gray-50"
+              onClick={() => onSectionClick("summary")}
+            >
               <h2 className="text-lg font-bold uppercase mb-2">Summary</h2>
               <p className="text-sm">{data.summary}</p>
             </section>
@@ -126,7 +161,9 @@ export default function ResumePreview({ data, onSectionClick }) {
         {data.experience && data.experience.length > 0 && (
           <>
             <section className="mb-6">
-              <h2 className="text-lg font-bold uppercase mb-2">Work Experience</h2>
+              <h2 className="text-lg font-bold uppercase mb-2">
+                Work Experience
+              </h2>
               {data.experience.map(
                 (exp, index) =>
                   exp.title && (
@@ -137,11 +174,15 @@ export default function ResumePreview({ data, onSectionClick }) {
                     >
                       <div className="flex justify-between items-start">
                         <h3 className="text-sm font-bold">{exp.title}</h3>
-                        {exp.period && <span className="text-sm">{exp.period}</span>}
+                        {exp.period && (
+                          <span className="text-sm">{exp.period}</span>
+                        )}
                       </div>
-                      {exp.description && <p className="text-sm mt-1">{exp.description}</p>}
+                      {exp.description && (
+                        <p className="text-sm mt-1">{exp.description}</p>
+                      )}
                     </div>
-                  ),
+                  )
               )}
             </section>
             <hr className="border-t border-black my-4" />
@@ -163,12 +204,16 @@ export default function ResumePreview({ data, onSectionClick }) {
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="text-sm font-bold">{edu.degree}</h3>
-                          {edu.institution && <p className="text-sm">{edu.institution}</p>}
+                          {edu.institution && (
+                            <p className="text-sm">{edu.institution}</p>
+                          )}
                         </div>
-                        {edu.period && <span className="text-sm">{edu.period}</span>}
+                        {edu.period && (
+                          <span className="text-sm">{edu.period}</span>
+                        )}
                       </div>
                     </div>
-                  ),
+                  )
               )}
             </section>
             <hr className="border-t border-black my-4" />
@@ -176,7 +221,9 @@ export default function ResumePreview({ data, onSectionClick }) {
         )}
 
         <section>
-          <h2 className="text-lg font-bold uppercase mb-2">Additional Information</h2>
+          <h2 className="text-lg font-bold uppercase mb-2">
+            Additional Information
+          </h2>
 
           {data.skills.technical &&
             data.skills.technical.length > 0 &&
@@ -187,7 +234,9 @@ export default function ResumePreview({ data, onSectionClick }) {
               >
                 <h3 className="text-sm font-bold mb-1">Technical Skills</h3>
                 <ul className="list-disc pl-5 text-sm">
-                  {data.skills.technical.map((skill, index) => skill && <li key={index}>{skill}</li>)}
+                  {data.skills.technical.map(
+                    (skill, index) => skill && <li key={index}>{skill}</li>
+                  )}
                 </ul>
               </div>
             )}
@@ -205,7 +254,7 @@ export default function ResumePreview({ data, onSectionClick }) {
                       <li key={index}>
                         {lang.language}: {lang.level}
                       </li>
-                    ),
+                    )
                 )}
               </ul>
             </div>
@@ -213,5 +262,5 @@ export default function ResumePreview({ data, onSectionClick }) {
         </section>
       </div>
     </div>
-  )
+  );
 }
