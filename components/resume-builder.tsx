@@ -69,7 +69,6 @@ const initialResumeData = {
 }
 
 export default function ResumeBuilder() {
-  const [] = useSidebar
   const [resumeData, setResumeData] = useState(initialResumeData)
   const [aiPrompt, setAiPrompt] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
