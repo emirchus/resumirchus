@@ -22,10 +22,18 @@ export default function ResumePreview({ data, onSectionClick }) {
   return (
     <div
       id="resume-preview"
-      className="w-full max-w-[800px] mx-auto bg-white p-8 shadow-lg"
-      style={{ backgroundColor: "white" }}
+      className="bg-white shadow-lg"
+      style={{
+        width: "210mm", // A4 width
+        minHeight: "297mm", // A4 height
+        maxWidth: "210mm",
+        backgroundColor: "white",
+        margin: "0 auto",
+        padding: "20mm", // Standard margin
+        boxSizing: "border-box",
+      }}
     >
-      <div className="border-2 border-black p-6">
+      <div className="border-2 border-black p-6 h-full">
         <header className="text-center mb-6 cursor-pointer hover:bg-gray-50" onClick={() => onSectionClick("personal")}>
           <h1
             className="text-3xl font-bold mb-2"
