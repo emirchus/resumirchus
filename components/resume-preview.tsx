@@ -49,7 +49,7 @@ export default function ResumePreview({
   return (
     <div
       id="resume-preview"
-      className="bg-white shadow-lg"
+      className="bg-background shadow-lg"
       style={{
         width: "210mm", // A4 width
         minHeight: "297mm", // A4 height
@@ -132,7 +132,7 @@ export default function ResumePreview({
                               onSectionClick("personal", null, "links");
                             }}
                           >
-                            {getHostnameFromUrl(link.url)}
+                            {link.url}
                           </span>
                         </span>
                       )

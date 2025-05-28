@@ -1,5 +1,7 @@
 "use client";
 
+import { useChat } from "@ai-sdk/react";
+import { defaultChatStore } from "ai";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +34,8 @@ import {
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import ResumePreview, { ResumeData } from "./resume-preview";
+import { exportToPDF } from "@/lib/export-pdf";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 const initialResumeData: ResumeData = {
   personalInfo: {
@@ -83,8 +87,12 @@ const initialResumeData: ResumeData = {
 
 export default function ResumeBuilder() {
   const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
-  const [aiPrompt, setAiPrompt] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
+  const aiChat = useChat({
+    chatStore: defaultChatStore({
+      api: "/api/chat",
+      maxSteps: 3,
+    }),
+  });
   const [activeTab, setActiveTab] = useState("personal");
 
   // Load data from localStorage on component mount
@@ -270,63 +278,26 @@ export default function ResumeBuilder() {
     }));
   };
 
-  const generateSummaryWithAI = async () => {
-    if (!aiPrompt) return;
+  useEffect(() => {
+    console.log(aiChat.status);
+    if (aiChat.status === "ready") {
+      const lastPrompt = aiChat.messages
+        .filter((message) => message.role !== "user")
+        .at(-1)
+        ?.parts.map((part) => (part.type === "text" ? part.text : ""))
+        .join("");
 
-    setIsGenerating(true);
-
-    // Simulate AI generation with a timeout
-    setTimeout(() => {
-      const generatedSummary = `Professional ${aiPrompt} with strong skills in problem-solving and teamwork. Experienced in developing innovative solutions and adapting to new technologies. Seeking opportunities to apply technical expertise in a dynamic, growth-focused environment.`;
+      if (!lastPrompt) return;
 
       setResumeData((prev) => ({
         ...prev,
-        summary: generatedSummary,
+        summary: lastPrompt,
       }));
-
-      setIsGenerating(false);
-      setAiPrompt("");
-    }, 1500);
-  };
+    }
+  }, [aiChat.status]);
 
   const exportAsPDF = () => {
-    const element = document.getElementById("resume-preview");
-
-    // Temporarily remove shadow, add white background, and set width to 80%
-    if (!element) return;
-
-    const originalStyle = element?.style.cssText;
-    element!.style.boxShadow = "none";
-    element!.style.background = "white";
-
-    html2canvas(element, {
-      backgroundColor: "#ffffff",
-      scale: 2, // Higher quality
-      useCORS: true,
-      logging: false,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 0;
-      pdf.addImage(
-        imgData,
-        "PNG",
-        imgX,
-        imgY,
-        imgWidth * ratio,
-        imgHeight * ratio
-      );
-      pdf.save("resume.pdf");
-
-      // Restore original style
-      element.style.cssText = originalStyle;
-    });
+    exportToPDF();
   };
 
   const exportAsImage = (format: string) => {
@@ -597,45 +568,55 @@ export default function ResumeBuilder() {
                   Professional Summary
                 </Label>
                 <Textarea
+                  placeholder="Just describe experiences, skills, education, etc."
                   id="summary"
                   ref={summaryRef}
                   rows={4}
                   value={resumeData.summary}
-                  onChange={(e) =>
-                    setResumeData({ ...resumeData, summary: e.target.value })
-                  }
-                  className="text-xs"
+                  disabled={aiChat.status === "streaming"}
+                  onChange={(e) => {
+                    setResumeData({ ...resumeData, summary: e.target.value });
+                    aiChat.setInput(e.target.value);
+                  }}
+                  className="text-xs bg-accent"
                 />
               </div>
-
-              <div className="border p-3 rounded-md bg-gray-50">
-                <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
-                  <Sparkles className="h-3 w-3" />
-                  Generate with AI
-                </h3>
-                <div className="space-y-2">
-                  <Label htmlFor="ai-prompt" className="text-xs">
-                    Describe your role
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex flex-row text-md items-center justify-start">
+                    <Sparkles className="size-4 mr-2" />
+                    Generate with AI
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={aiChat.handleSubmit} className="flex flex-col gap-2">
+                    <Textarea
                       id="ai-prompt"
+                      name="prompt"
                       placeholder="Software Developer"
-                      value={aiPrompt}
-                      onChange={(e) => setAiPrompt(e.target.value)}
+                      value={aiChat.input}
+                      onChange={aiChat.handleInputChange}
+                      disabled={aiChat.status === "streaming"}
                       className="h-7 text-xs"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          aiChat.handleSubmit(e);
+                        }
+                      }}
                     />
                     <Button
-                      onClick={generateSummaryWithAI}
-                      disabled={isGenerating || !aiPrompt}
+                      type="submit"
+                      disabled={aiChat.status === "streaming"}
                       size="sm"
                       className="h-7 text-xs"
                     >
-                      {isGenerating ? "..." : "Generate"}
+                      {aiChat.status === "streaming"
+                        ? "Generating..."
+                        : "Generate"}
                     </Button>
-                  </div>
-                </div>
-              </div>
+                  </form>
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="experience" className="space-y-4">
@@ -934,8 +915,8 @@ export default function ResumeBuilder() {
         </SidebarContent>
       </Sidebar>
 
-      <SidebarInset className="flex flex-1 relative overflow-auto h-screen bg-gray-100">
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 sticky top-0 bg-white z-10">
+      <SidebarInset className="flex flex-1 relative overflow-auto h-[calc(100vh-10rem)] bg-primary/20">
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 sticky top-0 bg-muted/50  backdrop-blur-sm z-10">
           <SidebarTrigger className="-ml-1" />
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Resume Preview</span>
