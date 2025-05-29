@@ -100,6 +100,7 @@ export default function ResumeBuilder() {
         console.error("Error parsing saved resume data:", error);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save data to localStorage whenever resumeData changes
