@@ -41,6 +41,8 @@ export async function POST(req: Request) {
       Only reply with the improved summary. **DO NOT** add any further instructions or any message other than the improved summary.
       Respond in English.
 
+      If the input is not a summary, return the input as is.
+
       ALWAYS RESPOND IN ENGLISH. If the input is in another language that is not English, translate it to English.
     `,
     messages: convertToModelMessages(messages),
