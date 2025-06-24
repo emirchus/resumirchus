@@ -1,6 +1,8 @@
 "use client";
 
 import { useResumeStore } from "@/stores/resume-data-store";
+import { Loader } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const handleLinkClick = (url: string) => {
   if (!url) return;
@@ -18,7 +20,19 @@ export default function ResumePreview({
   ) => void;
 }) {
   const { resumeData: data } = useResumeStore();
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader className="animate-spin" />
+      </div>
+    );
+  }
   return (
     <div
       id="resume-preview"
