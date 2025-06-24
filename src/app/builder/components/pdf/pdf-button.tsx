@@ -3,16 +3,18 @@ import React, { useEffect, useState } from "react";
 import { usePDF } from "@react-pdf/renderer";
 import { FileText, Loader2 } from "lucide-react";
 import { ResumePDF } from "@/app/builder/components/pdf/pdf-file";
-import { ResumeData } from "@/app/builder/types";
 import { Button } from "@/components/ui/button";
+import { useResumeStore } from "@/stores/resume-data-store";
 
 // Componente principal con datos de ejemplo
-export const PDFButton = ({ resumeData }: { resumeData: ResumeData }) => {
+export const PDFButton = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const { resumeData } = useResumeStore();
 
   const [instance] = usePDF({
     document: <ResumePDF resumeData={resumeData} />,

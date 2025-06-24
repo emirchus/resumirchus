@@ -10,7 +10,11 @@ import { Education, Experience } from "@/app/builder/types";
 interface ExperienceSectionProps {
   experience: Experience[];
   experienceRefs: RefObject<RefObject<HTMLDivElement>[]>;
-  onExperienceChange: (index: number, field: string, value: string) => void;
+  onExperienceChange: (
+    index: number,
+    field: keyof Experience,
+    value: string
+  ) => void;
   onRemoveExperience: (index: number) => void;
   onAddExperience: () => void;
 }
@@ -126,7 +130,11 @@ export function ExperienceSection({
 interface EducationSectionProps {
   education: Education[];
   educationRefs: RefObject<RefObject<HTMLDivElement>[]>;
-  onEducationChange: (index: number, field: string, value: string) => void;
+  onEducationChange: (
+    index: number,
+    field: keyof Education,
+    value: string
+  ) => void;
   onRemoveEducation: (index: number) => void;
   onAddEducation: () => void;
 }

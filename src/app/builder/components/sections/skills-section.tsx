@@ -9,21 +9,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Trash2 } from "lucide-react";
-import { Skills } from "@/app/builder/types";
+import { ResumeData, Skills } from "@/app/builder/types";
 
 interface SkillsSectionProps {
   skills: Skills;
   technicalSkillsRef: RefObject<HTMLDivElement | null>;
   languagesRef: RefObject<HTMLDivElement | null>;
-  onSkillChange: (
-    category: "technical" | "languages",
+  onSkillChange: <
+    T extends "technical" | "languages",
+    F extends keyof ResumeData["skills"][T][number]
+  >(
+    category: T,
     index: number,
-    value: {
-      category?: string;
-      language?: string;
-      level?: string;
-      skills?: string[];
-    }
+    field: F,
+    value: unknown
   ) => void;
   onRemoveSkill: (category: "technical" | "languages", index: number) => void;
   onAddTechnicalSkill: () => void;
@@ -41,17 +40,73 @@ export function SkillsSection({
 }: SkillsSectionProps) {
   const handleLanguageChange = (
     index: number,
-    field: string,
+    field: keyof ResumeData["skills"]["languages"][number],
     value: string
   ) => {
-    const updatedLanguage = { ...skills.languages[index], [field]: value };
-    onSkillChange("languages", index, updatedLanguage);
+    // const updatedLanguage = { ...skills.languages[index], [field]: value };
+    onSkillChange("languages", index, field, value);
+  };
+
+  const handleAddSkill = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    mainIndex: number,
+    mainSkill: ResumeData["skills"]["technical"][number]
+  ) => {
+    if (e.key === "Enter") {
+      const updatedSkills = [...mainSkill.skills];
+      updatedSkills.push("");
+      onSkillChange("technical", mainIndex, "skills", updatedSkills);
+      // Encuentra el elemento actual
+
+      setTimeout(() => {
+        const currentElement = document.activeElement;
+        if (!currentElement) return;
+
+        const focusableElements = document.querySelectorAll(
+          'input:not([tabindex="-1"]), ' +
+            'button:not([tabindex="-1"]), ' +
+            'select:not([tabindex="-1"]), ' +
+            'textarea:not([tabindex="-1"]), ' +
+            'a[href]:not([tabindex="-1"]), ' +
+            '[tabindex]:not([tabindex="-1"])'
+        );
+
+        // Convierte a array y filtra los elementos visibles
+        const visibleFocusableElements = Array.from(focusableElements).filter(
+          (el) => {
+            return (
+              (el as HTMLElement).offsetParent !== null && // Elemento visible
+              !(el as HTMLInputElement).disabled && // No deshabilitado
+              (el as HTMLElement).tabIndex !== -1
+            ); // Doble verificación de tabindex
+          }
+        );
+
+        // Encuentra el índice del elemento actual
+        const currentIndex = visibleFocusableElements.indexOf(currentElement);
+
+        // Mueve al siguiente elemento
+        if (currentIndex !== -1) {
+          const nextIndex =
+            (currentIndex + 1) % visibleFocusableElements.length;
+          (visibleFocusableElements[nextIndex] as HTMLElement).focus();
+        } else {
+          // Si el elemento actual no está en la lista, enfoca el primero
+          if (visibleFocusableElements.length > 0) {
+            (visibleFocusableElements[0] as HTMLElement).focus();
+          }
+        }
+      }, 100);
+    }
   };
 
   return (
     <div className="space-y-4 p-6">
       <div className="space-y-3" ref={technicalSkillsRef}>
         <h3 className="text-sm font-medium">Technical Skills</h3>
+        <p className="text-xs text-muted-foreground">
+          Add a category and then add skills to it (press enter to add a skill)
+        </p>
         {skills.technical.map((mainSkill, mainIndex) => (
           <div
             key={mainIndex}
@@ -61,15 +116,19 @@ export function SkillsSection({
               <Input
                 value={mainSkill.category}
                 onChange={(e) =>
-                  onSkillChange("technical", mainIndex, {
-                    ...mainSkill,
-                    category: e.target.value,
-                  })
+                  onSkillChange(
+                    "technical",
+                    mainIndex,
+                    "category",
+                    e.target.value
+                  )
                 }
+                onKeyDown={(e) => handleAddSkill(e, mainIndex, mainSkill)}
                 className="h-7 text-xs w-full"
                 placeholder="Category: Skill 1, Skill 2, Skill 3"
               />
               <Button
+                tabIndex={-1}
                 variant="ghost"
                 size="sm"
                 onClick={() => onRemoveSkill("technical", mainIndex)}
@@ -88,23 +147,29 @@ export function SkillsSection({
                     onChange={(e) => {
                       const updatedSkills = [...mainSkill.skills];
                       updatedSkills[index] = e.target.value;
-                      onSkillChange("technical", mainIndex, {
-                        ...mainSkill,
-                        skills: updatedSkills,
-                      });
+                      onSkillChange(
+                        "technical",
+                        mainIndex,
+                        "skills",
+                        updatedSkills
+                      );
                     }}
+                    onKeyDown={(e) => handleAddSkill(e, mainIndex, mainSkill)}
                     className="h-7 text-xs"
                   />
                   <Button
+                    tabIndex={-1}
                     variant="ghost"
                     size="sm"
                     onClick={() => {
                       const updatedSkills = [...mainSkill.skills];
                       updatedSkills.splice(index, 1);
-                      onSkillChange("technical", mainIndex, {
-                        ...mainSkill,
-                        skills: updatedSkills,
-                      });
+                      onSkillChange(
+                        "technical",
+                        mainIndex,
+                        "skills",
+                        updatedSkills
+                      );
                     }}
                     className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-100"
                   >

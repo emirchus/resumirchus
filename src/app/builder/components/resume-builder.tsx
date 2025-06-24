@@ -21,8 +21,7 @@ const PDFButton = dynamic(
   { ssr: false }
 );
 
-// Importaciones locales
-import { useResumeData } from "@/app/builder/hooks/use-resume-data";
+// Importaciones
 import { useAIChat } from "@/app/builder/hooks/use-ai-chat";
 import { exportAsImage } from "@/app/builder/utils/export-utils";
 import { focusOnSection, FocusRefs } from "@/app/builder/utils/focus-utils";
@@ -37,31 +36,43 @@ import {
 import { SkillsSection } from "@/app/builder/components/sections/skills-section";
 import dynamic from "next/dynamic";
 import { ModeSwitcher } from "@/components/mode-switch";
+import {
+  resumeSelectors,
+  useResumeSelector,
+  useResumeStore,
+} from "@/stores/resume-data-store";
+import { ResumeData, TechnicalSkill } from "@/app/builder/types";
 
 export default function ResumeBuilder() {
   const [activeTab, setActiveTab] = useState("personal");
   const { setOpen, setOpenMobile } = useSidebar();
 
   // Hook personalizado para manejo de datos
+  const personalInfo = useResumeSelector(resumeSelectors.personalInfo);
+  const summary = useResumeSelector(resumeSelectors.summary);
+  const experience = useResumeSelector(resumeSelectors.experience);
+  const education = useResumeSelector(resumeSelectors.education);
+  const skills = useResumeSelector(resumeSelectors.skills);
   const {
-    resumeData,
-    updatePersonalInfo,
     updateSummary,
-    updateLink,
-    removeLink,
-    addLink,
-    updateExperience,
-    removeExperience,
-    addExperience,
-    updateEducation,
-    removeEducation,
-    addEducation,
-    updateSkill,
-    removeSkill,
-    addTechnicalSkill,
-    addLanguage,
     resetData,
-  } = useResumeData();
+    updateEducation,
+    updateExperience,
+    addLink,
+    addEducation,
+    addExperience,
+    addLanguage,
+    addTechnicalSkill,
+    removeEducation,
+    removeExperience,
+    removeLanguage,
+    removeLink,
+    removeTechnicalSkill,
+    updateLanguage,
+    updateLink,
+    updatePersonalInfo,
+    updateTechnicalSkill,
+  } = useResumeStore();
 
   // Hook personalizado para AI chat
   const aiChat = useAIChat((generatedSummary) => {
@@ -135,7 +146,7 @@ export default function ResumeBuilder() {
             </Button>
           </div>
           <div className="flex gap-1 mt-3">
-            <PDFButton resumeData={resumeData} />
+            <PDFButton />
             <Button
               onClick={() => exportAsImage("PNG")}
               size="sm"
@@ -183,7 +194,7 @@ export default function ResumeBuilder() {
 
             <TabsContent value="personal">
               <PersonalSection
-                personalInfo={resumeData.personalInfo}
+                personalInfo={personalInfo}
                 personalRefs={personalRefs}
                 onPersonalInfoChange={updatePersonalInfo}
                 onLinkChange={updateLink}
@@ -194,7 +205,7 @@ export default function ResumeBuilder() {
 
             <TabsContent value="summary">
               <SummarySection
-                summary={resumeData.summary}
+                summary={summary}
                 summaryRef={summaryRef}
                 onSummaryChange={updateSummary}
                 aiInput={aiChat.input}
@@ -206,7 +217,7 @@ export default function ResumeBuilder() {
 
             <TabsContent value="experience">
               <ExperienceSection
-                experience={resumeData.experience}
+                experience={experience}
                 experienceRefs={experienceRefs}
                 onExperienceChange={updateExperience}
                 onRemoveExperience={removeExperience}
@@ -216,7 +227,7 @@ export default function ResumeBuilder() {
 
             <TabsContent value="education">
               <EducationSection
-                education={resumeData.education}
+                education={education}
                 educationRefs={educationRefs}
                 onEducationChange={updateEducation}
                 onRemoveEducation={removeEducation}
@@ -226,11 +237,31 @@ export default function ResumeBuilder() {
 
             <TabsContent value="skills">
               <SkillsSection
-                skills={resumeData.skills}
+                skills={skills}
                 technicalSkillsRef={technicalSkillsRef}
                 languagesRef={languagesRef}
-                onSkillChange={updateSkill}
-                onRemoveSkill={removeSkill}
+                onSkillChange={(category, index, field, value) => {
+                  if (category === "technical") {
+                    updateTechnicalSkill(
+                      index,
+                      field as keyof TechnicalSkill,
+                      value
+                    );
+                  } else {
+                    updateLanguage(
+                      index,
+                      field as keyof ResumeData["skills"]["languages"][number],
+                      value as string
+                    );
+                  }
+                }}
+                onRemoveSkill={(category, index) => {
+                  if (category === "technical") {
+                    removeTechnicalSkill(index);
+                  } else {
+                    removeLanguage(index);
+                  }
+                }}
                 onAddTechnicalSkill={addTechnicalSkill}
                 onAddLanguage={addLanguage}
               />
@@ -247,10 +278,7 @@ export default function ResumeBuilder() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <ResumePreview
-            data={resumeData}
-            onSectionClick={handleSectionFocus}
-          />
+          <ResumePreview onSectionClick={handleSectionFocus} />
         </div>
       </SidebarInset>
     </>

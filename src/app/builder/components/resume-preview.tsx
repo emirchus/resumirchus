@@ -1,6 +1,6 @@
 "use client";
 
-import { ResumeData } from "@/app/builder/types";
+import { useResumeStore } from "@/stores/resume-data-store";
 
 const handleLinkClick = (url: string) => {
   if (!url) return;
@@ -9,16 +9,16 @@ const handleLinkClick = (url: string) => {
 };
 
 export default function ResumePreview({
-  data,
   onSectionClick,
 }: {
-  data: ResumeData;
   onSectionClick: (
     section: string,
     index?: number | null,
     field?: string
   ) => void;
 }) {
+  const { resumeData: data } = useResumeStore();
+
   return (
     <div
       id="resume-preview"
@@ -153,14 +153,17 @@ export default function ResumePreview({
                             ? new Date(exp.periodStart).toLocaleDateString(
                                 "en-US",
                                 { month: "long", year: "numeric" }
-                              )
-                            : ""}{" "}
-                          {exp.periodEnd
-                            ? `- ${new Date(exp.periodEnd).toLocaleDateString(
-                                "en-US",
-                                { month: "long", year: "numeric" }
-                              )}`
-                            : "- Present"}
+                              ) +
+                              " " +
+                              (exp.periodEnd
+                                ? `- ${new Date(
+                                    exp.periodEnd
+                                  ).toLocaleDateString("en-US", {
+                                    month: "long",
+                                    year: "numeric",
+                                  })}`
+                                : "- Present")
+                            : ""}
                         </span>
                       </div>
                       {exp.description && (
@@ -198,13 +201,16 @@ export default function ResumePreview({
                             ? new Date(edu.periodStart).toLocaleDateString(
                                 "en-US",
                                 { month: "long", year: "numeric" }
-                              )
-                            : ""}{" "}
-                          {edu.periodEnd
-                            ? `- ${new Date(edu.periodEnd).toLocaleDateString(
-                                "en-US",
-                                { month: "long", year: "numeric" }
-                              )}`
+                              ) +
+                              " " +
+                              (edu.periodEnd
+                                ? `- ${new Date(
+                                    edu.periodEnd
+                                  ).toLocaleDateString("en-US", {
+                                    month: "long",
+                                    year: "numeric",
+                                  })}`
+                                : "- Present")
                             : ""}
                         </span>
                       </div>

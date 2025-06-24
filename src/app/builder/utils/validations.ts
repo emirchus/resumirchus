@@ -2,7 +2,7 @@
 import { z } from "zod";
 
 // Schema para PersonalInfo
-const PersonalInfoSchema = z.object({
+export const PersonalInfoSchema = z.object({
   name: z.string().optional(),
   location: z.string().optional(),
   phone: z.string().optional(),
@@ -18,7 +18,7 @@ const PersonalInfoSchema = z.object({
 });
 
 // Schema para Experience
-const ExperienceSchema = z.object({
+export const ExperienceSchema = z.object({
   position: z.string().optional(),
   company: z.string().optional(),
   periodStart: z.string().optional(),
@@ -27,7 +27,7 @@ const ExperienceSchema = z.object({
 });
 
 // Schema para Education
-const EducationSchema = z.object({
+export const EducationSchema = z.object({
   degree: z.string().optional(),
   institution: z.string().optional(),
   periodStart: z.string().optional(),
@@ -35,13 +35,13 @@ const EducationSchema = z.object({
 });
 
 // Schema para TechnicalSkill
-const TechnicalSkillSchema = z.object({
+export const TechnicalSkillSchema = z.object({
   category: z.string().optional(),
   skills: z.array(z.string()).optional(),
 });
 
 // Schema para Skills
-const SkillsSchema = z.object({
+export const SkillsSchema = z.object({
   technical: z.array(TechnicalSkillSchema).optional(),
   languages: z
     .array(

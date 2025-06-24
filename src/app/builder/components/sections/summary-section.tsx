@@ -53,7 +53,7 @@ export function SummarySection({
           <div className="flex flex-col gap-2">
             <Textarea
               id="ai-prompt"
-              placeholder="Desarrollador de Software"
+              placeholder="Web developer with 5 years of experience"
               value={aiInput}
               onChange={onAIInputChange}
               disabled={isGenerating}

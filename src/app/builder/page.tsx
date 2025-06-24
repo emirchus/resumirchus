@@ -1,4 +1,3 @@
-
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { CSSProperties } from "react";
 import ResumeBuilder from "./components/resume-builder";

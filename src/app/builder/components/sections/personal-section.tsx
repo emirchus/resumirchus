@@ -1,3 +1,4 @@
+"use client";
 import { RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +11,12 @@ interface PersonalSectionProps {
   personalRefs: {
     [key: string]: RefObject<HTMLInputElement | null>;
   };
-  onPersonalInfoChange: (field: string, value: string) => void;
-  onLinkChange: (index: number, field: string, value: string) => void;
+  onPersonalInfoChange: (field: keyof PersonalInfo, value: string) => void;
+  onLinkChange: (
+    index: number,
+    field: keyof PersonalInfo["links"][number],
+    value: string
+  ) => void;
   onRemoveLink: (index: number) => void;
   onAddLink: () => void;
 }
@@ -81,7 +86,10 @@ export function PersonalSection({
       <div className="space-y-3" ref={personalRefs.links}>
         <h3 className="text-sm font-medium">Links</h3>
         {personalInfo.links.map((link, index) => (
-          <div key={index} className="space-y-2 p-4 border rounded">
+          <div
+            key={`link-${index}-${link.label || "empty"}`}
+            className="space-y-2 p-4 border rounded"
+          >
             <div className="flex gap-2">
               <div className="flex-1 flex flex-col gap-2">
                 <Label htmlFor={`link-label-${index}`} className="text-xs">
