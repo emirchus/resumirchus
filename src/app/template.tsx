@@ -9,7 +9,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 10, opacity: 0, scale: 0 }}
         transition={{ ease: "easeInOut", duration: 0.76 }}
-        className="h-screen w-screen"
+        className="h-screen "
       >
         {children}
       </motion.div>
