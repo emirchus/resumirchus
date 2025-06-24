@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useCallback } from "react";
 import { initialResumeData, ResumeData } from "@/app/builder/types";
+import { validateWithDefaults } from "@/app/builder/utils/validations";
 
 export function useResumeData() {
   // Inicializar con datos del localStorage si existen, sino usar datos iniciales
@@ -9,7 +10,7 @@ export function useResumeData() {
       const savedData = localStorage.getItem("resumeData");
       if (savedData) {
         try {
-          return JSON.parse(savedData);
+          return validateWithDefaults(JSON.parse(savedData)) as ResumeData;
         } catch (error) {
           console.error("Error parsing saved resume data:", error);
         }
