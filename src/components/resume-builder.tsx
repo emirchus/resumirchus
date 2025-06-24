@@ -39,9 +39,9 @@ import {
 } from "@/components/ui/sidebar";
 import html2canvas from "html2canvas";
 import ResumePreview, { ResumeData } from "./resume-preview";
-import { exportToPDF } from "@/lib/export-pdf";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ThemeToggleButton } from "./theme-toggle";
+import { PDFButton } from "./pdf-button";
 
 const initialResumeData: ResumeData = {
   personalInfo: {
@@ -100,7 +100,7 @@ export default function ResumeBuilder() {
         console.error("Error parsing saved resume data:", error);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save data to localStorage whenever resumeData changes
@@ -300,9 +300,6 @@ export default function ResumeBuilder() {
     }
   }, [aiChat.messages, aiChat.status]);
 
-  const exportAsPDF = () => {
-    exportToPDF();
-  };
 
   const exportAsImage = (format: string) => {
     const element = document.getElementById("resume-preview");
@@ -388,14 +385,7 @@ export default function ResumeBuilder() {
             </Button>
           </div>
           <div className="flex gap-1 mt-3">
-            <Button
-              onClick={exportAsPDF}
-              size="sm"
-              className="flex items-center gap-1 text-xs"
-            >
-              <FileText className="h-3 w-3" />
-              PDF
-            </Button>
+            <PDFButton resumeData={resumeData} />
             <Button
               onClick={() => exportAsImage("PNG")}
               size="sm"
