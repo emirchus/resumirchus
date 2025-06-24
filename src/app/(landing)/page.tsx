@@ -30,11 +30,13 @@ export default function MainPage() {
                   <span className="font-medium">Introducing AI Summary</span>
                 </Link>
                 <h1 className="mx-auto mt-8 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-                  Build your Resume 10x Faster
+                  Build Your Resume 10x Faster with AI
                 </h1>
                 <p className="text-muted-foreground mx-auto my-6 max-w-xl text-balance text-xl">
-                  Create a professional resume in minutes with our AI-powered
-                  resume builder.
+                  Craft a polished, professional resume in minutes using our
+                  cutting-edge, AI-powered resume builder. No more endless
+                  formatting or worrying about structure—just the perfect
+                  resume, every time.
                 </p>
 
                 <div className="flex items-center justify-center gap-3">
@@ -69,10 +71,12 @@ export default function MainPage() {
           className="flex flex-col items-start justify-start container mx-auto border pb-32 border-dashed py-32"
         >
           <h1 className="mx-auto mt-8 max-w-7xl text-balance text-start text-4xl font-bold tracking-tight sm:text-5xl">
-            Features
+            Features That Set Us Apart
           </h1>
           <p className="text-muted-foreground mx-auto my-6 max-w-xl text-balance text-xl">
-            Our resume builder is free to use and there are no hidden fees.
+            Our resume builder isn’t just another tool—it’s your gateway to
+            crafting the perfect resume with ease. No hidden fees, no paywalls,
+            just simple, fast, and effective resume building for everyone.
           </p>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full">
             <WobbleCard
@@ -81,11 +85,13 @@ export default function MainPage() {
             >
               <div className="max-w-xs">
                 <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-                  AI powers your summary
+                  AI-Powered Summaries
                 </h2>
                 <p className="mt-4 text-left  text-base/6 text-neutral-200">
-                  Our AI-powered resume builder uses advanced algorithms to
-                  generate a professional resume in seconds.
+                  Harness the power of AI to automatically generate professional
+                  summaries that highlight your skills and experience in the
+                  best possible way. No more worrying about word choices or
+                  formatting.
                 </p>
               </div>
               <Image
@@ -101,11 +107,12 @@ export default function MainPage() {
               className="bg-[#735728]"
             >
               <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-                Best Design
+                A Sleek, Professional Design
               </h2>
               <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-                Our resume builder uses the best design templates to create a
-                professional resume.
+                Your resume will stand out with our beautifully designed
+                templates, optimized for both aesthetics and functionality,
+                ensuring you look professional without the hassle.
               </p>
               <Image
                 src="/resume.png"
@@ -121,11 +128,12 @@ export default function MainPage() {
             >
               <div className="max-w-sm">
                 <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-                  No Paywall, No Hidden Fees
+                  Completely Free, No Strings Attached
                 </h2>
                 <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-                  Our resume builder is free to use and there are no hidden
-                  fees.
+                  We believe in making this tool accessible to everyone. There
+                  are no hidden charges or paywalls—use it for as long as you
+                  want, without worrying about unexpected costs.
                 </p>
               </div>
               <Image
@@ -145,7 +153,7 @@ export default function MainPage() {
           <div className="mx-auto max-w-5xl px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
-                Start building your resume today
+                Start Building Your Perfect Resume Today
               </h2>
             </div>
             <div className="mt-8 md:mt-20">
@@ -153,28 +161,31 @@ export default function MainPage() {
                 <div className="grid items-center gap-12 divide-y p-12 md:grid-cols-2 md:divide-x md:divide-y-0">
                   <div className="pb-12 text-center md:pb-0 md:pr-12">
                     <h3 className="text-2xl font-semibold">Free</h3>
-                    <p className="mt-2 text-lg">For your resume of any size</p>
+                    <p className="mt-2 text-lg">
+                      Create a resume of any size without any hidden fees
+                    </p>
                     <span className="mb-6 mt-12 inline-block text-6xl font-bold">
                       <span className="text-4xl">$</span>0
                     </span>
 
                     <div className="flex justify-center">
                       <Button asChild size="lg">
-                        <Link href="/builder">Get started</Link>
+                        <Link href="/builder">Get Started</Link>
                       </Button>
                     </div>
 
                     <p className="text-muted-foreground mt-12 text-sm">
-                      Includes : no cards, no registration. FREE
+                      No cards, no registration—just a free service with
+                      unlimited access.
                     </p>
                   </div>
                   <div className="relative">
                     <ul role="list" className="space-y-4">
                       {[
-                        "AI Summary",
-                        "Design Easy to use",
-                        "All in one",
-                        "Export to PDF, PNG or JPG",
+                        "AI-Powered Summary Creation",
+                        "Sleek & Professional Design Templates",
+                        "One-Click Export to PDF, PNG, or JPG",
+                        "Unlimited Use—No Hidden Fees",
                       ].map((item, index) => (
                         <li key={index} className="flex items-center gap-2">
                           <Check className="size-3" />
@@ -183,8 +194,8 @@ export default function MainPage() {
                       ))}
                     </ul>
                     <p className="text-muted-foreground mt-6 text-sm">
-                      We offer this for free, it&apos;s a free service for
-                      everyone.
+                      Everything you need to create your perfect resume—free of
+                      charge.
                     </p>
                   </div>
                 </div>
@@ -204,21 +215,21 @@ export default function MainPage() {
                   <br className="hidden lg:block" />
                   Questions
                 </h2>
-                <p>We are here to help you with any questions you may have.</p>
+                <p>We’re here to answer all your questions—no matter what!</p>
               </div>
 
               <div className="divide-y divide-dashed sm:mx-auto sm:max-w-lg lg:mx-0">
                 <div className="pb-6">
                   <h3 className="font-medium">How can I contact you?</h3>
                   <p className="text-muted-foreground mt-4">
-                    You can contact us via email or twitter for any questions or
-                    concerns you may have.
+                    You can easily reach us by email or Twitter for any
+                    questions or concerns.
                   </p>
 
                   <ol className="list-outside list-decimal space-y-2 pl-4">
                     <li className="text-muted-foreground mt-4">
                       Email:{" "}
-                      <a href="mailto:contact@gippity.com">
+                      <a href="mailto:contact@resumirchus.emirchus.ar">
                         contact@resumirchus.emirchus.ar
                       </a>
                     </li>
@@ -228,16 +239,17 @@ export default function MainPage() {
                   </ol>
                 </div>
                 <div className="py-6">
-                  <h3 className="font-medium">It&apos;s free?</h3>
+                  <h3 className="font-medium">Is this truly free?</h3>
                   <p className="text-muted-foreground mt-4">
-                    Yes, it&apos;s free. We offer this for free, it&apos;s a
-                    free service for everyone.
+                    Yes, absolutely! Our service is completely free with no
+                    strings attached.
                   </p>
                 </div>
                 <div className="py-6">
                   <h3 className="font-medium">How can I export my resume?</h3>
                   <p className="text-muted-foreground my-4">
-                    You can export your resume to PDF, PNG or JPG.
+                    You can export your resume in multiple formats: PDF, PNG, or
+                    JPG—all for free!
                   </p>
                   <ul className="list-outside list-disc space-y-2 pl-4">
                     <li className="text-muted-foreground">
@@ -252,19 +264,18 @@ export default function MainPage() {
                   </ul>
                 </div>
                 <div className="py-6">
-                  <h3 className="font-medium">
-                    Will it be paid in the future?
-                  </h3>
+                  <h3 className="font-medium">Will this ever become paid?</h3>
                   <p className="text-muted-foreground mt-4">
-                    No, we will not charge you for anything.
+                    No, we are committed to keeping this service free for
+                    everyone, always.
                   </p>
                 </div>
                 <div className="py-6">
-                  <h3 className="font-medium">My information is safe?</h3>
+                  <h3 className="font-medium">Is my information secure?</h3>
                   <p className="text-muted-foreground mt-4">
-                    Yes, your information is safe. We do not store any of your
-                    information. We do not use any third party services to store
-                    your information.
+                    Yes, your information is completely safe. We don’t store
+                    your data, and we never use third-party services to handle
+                    it.
                   </p>
                 </div>
               </div>
