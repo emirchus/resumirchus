@@ -15,10 +15,24 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(siteConfig.url),
   openGraph: {
+    type: "website",
+    locale: "es_ES",
+    url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
+    images: [{ url: siteConfig.ogImage, alt: siteConfig.name }],
+  },
+  twitter: {
+    title: siteConfig.name,
+    card: "summary",
+    site: siteConfig.links.twitter,
+    images: [{ url: siteConfig.ogImage, alt: siteConfig.name }],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: siteConfig.name,
+    // startUpImage: [],
   },
 };
 
@@ -29,13 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          fontSans.variable,
-          "font-sans",
-          fontSerif.variable,
-        )}
-      >
+      <body className={cn(fontSans.variable, "font-sans", fontSerif.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
