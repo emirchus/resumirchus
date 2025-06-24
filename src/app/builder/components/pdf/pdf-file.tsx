@@ -1,21 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  PDFDownloadLink,
-  Link,
-  PDFViewer,
-} from "@react-pdf/renderer";
-import { ResumeData } from "./resume-preview";
-import { Button } from "./ui/button";
-import { FileText, Loader2 } from "lucide-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
+import { ResumeData } from "@/app/builder/types";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
-// Estilos para el PDF
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#FFFFFF",
@@ -121,7 +106,7 @@ const styles = StyleSheet.create({
 });
 
 // Componente del PDF
-const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
+export const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
@@ -149,8 +134,23 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
           {resumeData.experience.map((job, index) => (
             <View key={index} style={{ marginBottom: 10 }}>
               <View style={styles.jobHeader}>
-                <Text style={styles.jobTitle}>{job.title}</Text>
-                <Text style={styles.jobDate}>{job.period}</Text>
+                <Text style={styles.jobTitle}>
+                  {job.position} {job.company && `| ${job.company}`}
+                </Text>
+                <Text style={styles.jobDate}>
+                  {job.periodStart
+                    ? new Date(job.periodStart).toLocaleDateString("en-US", {
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : ""}{" "}
+                  {job.periodEnd
+                    ? `- ${new Date(job.periodEnd).toLocaleDateString("en-US", {
+                        month: "long",
+                        year: "numeric",
+                      })}`
+                    : "- Present"}
+                </Text>
               </View>
               <Text style={styles.jobDescription}>{job.description}</Text>
             </View>
@@ -164,7 +164,20 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
             <View key={index}>
               <View style={styles.educationHeader}>
                 <Text style={styles.degree}>{edu.degree}</Text>
-                <Text style={styles.jobDate}>{edu.period}</Text>
+                <Text style={styles.jobDate}>
+                  {edu.periodStart
+                    ? new Date(edu.periodStart).toLocaleDateString("en-US", {
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : ""}{" "}
+                  {edu.periodEnd
+                    ? `- ${new Date(edu.periodEnd).toLocaleDateString("en-US", {
+                        month: "long",
+                        year: "numeric",
+                      })}`
+                    : ""}
+                </Text>
               </View>
               <Text style={styles.institution}>{edu.institution}</Text>
             </View>
@@ -180,7 +193,7 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
             <Text style={styles.skillCategory}>Technical Skills</Text>
             {resumeData.skills.technical.map((category, index) => (
               <Text key={index} style={styles.skillsList}>
-                • {category}
+                • {category.category}: {category.skills.join(", ")}
               </Text>
             ))}
           </View>
@@ -199,45 +212,3 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
     </Page>
   </Document>
 );
-
-// Componente principal con datos de ejemplo
-export const PDFButton = ({ resumeData }: { resumeData: ResumeData }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-
-  return (
-    <>
-      <HoverCard>
-        <HoverCardTrigger asChild>
-          <Button asChild size="sm">
-            <PDFDownloadLink
-              document={<ResumePDF resumeData={resumeData} />}
-              fileName="resume.pdf"
-            >
-              {({ blob, url, loading, error }) =>
-                loading ? (
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                ) : (
-                  <div className="flex items-center gap-1 text-xs">
-                    <FileText className="size-3" />
-                    PDF
-                  </div>
-                )
-              }
-            </PDFDownloadLink>
-          </Button>
-        </HoverCardTrigger>
-        <HoverCardContent className="w-[40rem] h-[80vh]">
-          <PDFViewer className="w-full h-full">
-            <ResumePDF resumeData={resumeData} />
-          </PDFViewer>
-        </HoverCardContent>
-      </HoverCard>
-    </>
-  );
-};

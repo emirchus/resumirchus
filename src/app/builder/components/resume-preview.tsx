@@ -1,27 +1,12 @@
 "use client";
 
+import { ResumeData } from "@/app/builder/types";
+
 const handleLinkClick = (url: string) => {
   if (!url) return;
   const urlWithProtocol = url.startsWith("http") ? url : `https://${url}`;
   window.open(urlWithProtocol, "_blank");
 };
-
-export interface ResumeData {
-  personalInfo: {
-    name: string;
-    location: string;
-    phone: string;
-    email: string;
-    links: { url: string; label: string }[];
-  };
-  summary: string;
-  experience: { title: string; period: string; description: string }[];
-  education: { degree: string; institution: string; period: string }[];
-  skills: {
-    technical: string[];
-    languages: { language: string; level: string }[];
-  };
-}
 
 export default function ResumePreview({
   data,
@@ -37,7 +22,7 @@ export default function ResumePreview({
   return (
     <div
       id="resume-preview"
-      className="bg-white shadow-lg text-black"
+      className="bg-white shadow-lg text-black !font-serif"
       style={{
         width: "210mm", // A4 width
         minHeight: "297mm", // A4 height
@@ -153,17 +138,30 @@ export default function ResumePreview({
               </h2>
               {data.experience.map(
                 (exp, index) =>
-                  exp.title && (
+                  exp.position && (
                     <div
                       key={index}
                       className="mb-4 cursor-pointer hover:bg-gray-50"
                       onClick={() => onSectionClick("experience", index)}
                     >
                       <div className="flex justify-between items-start">
-                        <h3 className="text-sm font-bold">{exp.title}</h3>
-                        {exp.period && (
-                          <span className="text-sm">{exp.period}</span>
-                        )}
+                        <h3 className="text-sm font-bold">
+                          {exp.position} {exp.company && `| ${exp.company}`}
+                        </h3>
+                        <span className="text-sm">
+                          {exp.periodStart
+                            ? new Date(exp.periodStart).toLocaleDateString(
+                                "en-US",
+                                { month: "long", year: "numeric" }
+                              )
+                            : ""}{" "}
+                          {exp.periodEnd
+                            ? `- ${new Date(exp.periodEnd).toLocaleDateString(
+                                "en-US",
+                                { month: "long", year: "numeric" }
+                              )}`
+                            : "- Present"}
+                        </span>
                       </div>
                       {exp.description && (
                         <p className="text-sm mt-1">{exp.description}</p>
@@ -195,9 +193,20 @@ export default function ResumePreview({
                             <p className="text-sm">{edu.institution}</p>
                           )}
                         </div>
-                        {edu.period && (
-                          <span className="text-sm">{edu.period}</span>
-                        )}
+                        <span className="text-sm">
+                          {edu.periodStart
+                            ? new Date(edu.periodStart).toLocaleDateString(
+                                "en-US",
+                                { month: "long", year: "numeric" }
+                              )
+                            : ""}{" "}
+                          {edu.periodEnd
+                            ? `- ${new Date(edu.periodEnd).toLocaleDateString(
+                                "en-US",
+                                { month: "long", year: "numeric" }
+                              )}`
+                            : ""}
+                        </span>
                       </div>
                     </div>
                   )
@@ -221,9 +230,11 @@ export default function ResumePreview({
               >
                 <h3 className="text-sm font-bold mb-1">Technical Skills</h3>
                 <ul className="list-disc pl-5 text-sm">
-                  {data.skills.technical.map(
-                    (skill, index) => skill && <li key={index}>{skill}</li>
-                  )}
+                  {data.skills.technical.map((skill, index) => (
+                    <li key={index}>
+                      {skill.category}: {skill.skills.join(", ")}
+                    </li>
+                  ))}
                 </ul>
               </div>
             )}
