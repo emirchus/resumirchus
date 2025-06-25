@@ -110,13 +110,6 @@ export default function MainPage() {
               templates, optimized for both aesthetics and functionality,
               ensuring you look professional without the hassle.
             </p>
-            <Image
-              src="/resume.png"
-              width={500}
-              height={204}
-              alt="linear demo image"
-              className="absolute -right-4 lg:-right-[40%] grayscale filter -bottom-[150%] object-contain rounded-2xl"
-            />
           </WobbleCard>
           <WobbleCard
             containerClassName="col-span-1 lg:col-span-3 bg-[#907562] min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]"
