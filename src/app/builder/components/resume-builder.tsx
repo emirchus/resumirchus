@@ -212,6 +212,7 @@ export default function ResumeBuilder() {
                 onAIInputChange={aiChat.handleInputChange}
                 onGenerateSummary={() => aiChat.generateSummary(aiChat.input)}
                 isGenerating={aiChat.isGenerating}
+                aiChatStatus={aiChat.status}
               />
             </TabsContent>
 
