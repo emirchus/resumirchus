@@ -8,9 +8,10 @@ import Image from "next/image";
 import { ModeSwitcher } from "../../../components/mode-switch";
 
 const menuItems = [
-  { name: "Features", href: "#features" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "About", href: "#about" },
+  { name: "Features", href: "/#features" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQ", href: "/#faq" },
+  { name: "Roadmap", href: "/roadmap" },
 ];
 
 export const Header = () => {
