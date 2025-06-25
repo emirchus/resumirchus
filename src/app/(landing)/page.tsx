@@ -55,7 +55,7 @@ export default function MainPage() {
                     <HeroVideoDialog
                       className="block"
                       animationStyle="from-center"
-                      videoSrc="https://www.youtube.com/embed/ek2lL8cH09w?si=4rb-zSdDkVK9qxxb"
+                      videoSrc="https://www.youtube.com/embed/7eAo2EJbGSk?si=4rb-zSdDkVK9qxxb"
                       thumbnailDarkSrc="/preview.png"
                       thumbnailSrc="/preview-light.png"
                       thumbnailAlt="Resume Builder Preview"
