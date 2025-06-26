@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { usePDF } from "@react-pdf/renderer";
 import { FileText, Loader2 } from "lucide-react";
 import { ResumePDF } from "@/app/builder/components/pdf/pdf-file";
 import { Button } from "@/components/ui/button";
-import { useResumeStore } from "@/stores/resume-data-store";
 
 // Componente principal con datos de ejemplo
 export const PDFButton = () => {
@@ -14,10 +13,10 @@ export const PDFButton = () => {
     setIsMounted(true);
   }, []);
 
-  const { resumeData } = useResumeStore();
+  const document = useMemo(() => <ResumePDF />, []);
 
   const [instance] = usePDF({
-    document: <ResumePDF resumeData={resumeData} />,
+    document,
   });
 
   if (!isMounted) return null;

@@ -21,8 +21,6 @@ const PDFButton = dynamic(
   { ssr: false }
 );
 
-// Importaciones
-import { useAIChat } from "@/app/builder/hooks/use-ai-chat";
 import { exportAsImage } from "@/app/builder/utils/export-utils";
 import { focusOnSection, FocusRefs } from "@/app/builder/utils/focus-utils";
 
@@ -73,11 +71,6 @@ export default function ResumeBuilder() {
     updatePersonalInfo,
     updateTechnicalSkill,
   } = useResumeStore();
-
-  // Hook personalizado para AI chat
-  const aiChat = useAIChat((generatedSummary) => {
-    updateSummary(generatedSummary);
-  });
 
   // Referencias para el focus
   const personalRefs: FocusRefs["personalRefs"] = {
@@ -170,11 +163,11 @@ export default function ResumeBuilder() {
 
         <SidebarContent className="p-4">
           <Tabs
-            className="w-full  rounded-lg"
+            className="w-full rounded-lg h-full relative"
             value={activeTab}
             onValueChange={setActiveTab}
           >
-            <TabsList className="grid grid-cols-5 mb-4 h-8 w-full">
+            <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full h-fit sticky top-0 z-10 pt-0">
               <TabsTrigger value="personal" className="text-xs">
                 Personal
               </TabsTrigger>
@@ -208,11 +201,6 @@ export default function ResumeBuilder() {
                 summary={summary}
                 summaryRef={summaryRef}
                 onSummaryChange={updateSummary}
-                aiInput={aiChat.input}
-                onAIInputChange={aiChat.handleInputChange}
-                onGenerateSummary={() => aiChat.generateSummary(aiChat.input)}
-                isGenerating={aiChat.isGenerating}
-                aiChatStatus={aiChat.status}
               />
             </TabsContent>
 

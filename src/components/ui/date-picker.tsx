@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
+import * as React from "react";
+import { ChevronDownIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 interface DatePickerProps {
   label: string;
@@ -19,8 +19,8 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ label, date, setDate }: DatePickerProps) {
-  const [open, setOpen] = React.useState(false)
-  const labelId = React.useId()
+  const [open, setOpen] = React.useState(false);
+  const labelId = React.useId();
 
   return (
     <div className="flex flex-col gap-3">
@@ -32,7 +32,7 @@ export function DatePicker({ label, date, setDate }: DatePickerProps) {
           <Button
             variant="outline"
             id={labelId}
-            className="w-48 justify-between font-normal"
+            className="w-full justify-between font-normal"
           >
             {date ? date.toLocaleDateString() : "Select date"}
             <ChevronDownIcon />
@@ -44,12 +44,12 @@ export function DatePicker({ label, date, setDate }: DatePickerProps) {
             selected={date}
             captionLayout="dropdown"
             onSelect={(date) => {
-              setDate(date)
-              setOpen(false)
+              setDate(date);
+              setOpen(false);
             }}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

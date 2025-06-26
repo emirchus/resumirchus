@@ -192,7 +192,7 @@ export function SkillsSection({
       <div className="space-y-3" ref={languagesRef}>
         <h3 className="text-sm font-medium">Languages</h3>
         {skills.languages.map((lang, index) => (
-          <div key={index} className="flex items-center gap-2">
+          <div key={index} className="flex items-center gap-2 w-full flex-wrap">
             <div className="flex-1">
               <Select
                 value={lang.language}

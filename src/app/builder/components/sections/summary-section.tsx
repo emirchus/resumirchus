@@ -1,28 +1,19 @@
 import { RefObject } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { AiButton } from "@/app/builder/components/ai-button";
+import { GenerateButton } from "@/app/builder/components/generate-button";
+import { EnhanceButton } from "@/app/builder/components/enhance-button";
 
 interface SummarySectionProps {
   summary: string;
   summaryRef: RefObject<HTMLTextAreaElement | null>;
   onSummaryChange: (summary: string) => void;
-  aiInput: string;
-  onAIInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onGenerateSummary: () => void;
-  isGenerating: boolean;
-
-  aiChatStatus: "submitted" | "streaming" | "ready" | "error";
 }
 
 export function SummarySection({
   summary,
   summaryRef,
   onSummaryChange,
-  onAIInputChange,
-  onGenerateSummary,
-  isGenerating,
-  aiChatStatus,
 }: SummarySectionProps) {
   return (
     <div className="space-y-4 p-6 pb-8">
@@ -36,19 +27,14 @@ export function SummarySection({
           ref={summaryRef}
           rows={4}
           value={summary}
-          disabled={isGenerating}
           onChange={(e) => {
             onSummaryChange(e.target.value);
-            onAIInputChange(e);
           }}
           className="text-xs bg-secondary dark:bg-muted"
         />
       </div>
-      <AiButton
-        onClick={onGenerateSummary}
-        disabled={aiChatStatus === "streaming"}
-        isGenerating={isGenerating || aiChatStatus === "streaming"}
-      />
+      <EnhanceButton />
+      <GenerateButton />
     </div>
   );
 }

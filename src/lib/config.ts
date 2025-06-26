@@ -18,7 +18,7 @@ export const siteConfig = {
   url: "https://resumirchus.emirchus.ar",
   ogImage: "https://resumirchus.emirchus.ar/og.png",
   description:
-    " Craft a polished, professional resume in minutes using our cutting-edge, AI-powered resume builder. No more endless formatting or worrying about structure—just the perfect resume, every time.",
+    "Craft a polished, professional resume in minutes using our cutting-edge, AI-powered resume builder. No more endless formatting or worrying about structure—just the perfect resume, every time.",
   links: {
     twitter: "https://x.com/emirchus",
     github: "https://github.com/emirchus",

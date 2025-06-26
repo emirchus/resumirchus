@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { fontSans, fontSerif, siteConfig } from "@/lib/config";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body className={cn(fontSans.variable, "font-sans", fontSerif.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <Toaster position="bottom-left" richColors />
         </ThemeProvider>
       </body>
     </html>

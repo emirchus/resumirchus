@@ -74,7 +74,7 @@ export function ExperienceSection({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-2">
             <DatePicker
               label="Start Date"
               date={exp.periodStart ? new Date(exp.periodStart) : undefined}
@@ -194,7 +194,7 @@ export function EducationSection({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
             <DatePicker
               label="Start Date"
               date={edu.periodStart ? new Date(edu.periodStart) : undefined}

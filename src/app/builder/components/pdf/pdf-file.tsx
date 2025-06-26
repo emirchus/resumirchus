@@ -1,4 +1,4 @@
-import { ResumeData } from "@/app/builder/types";
+import { useResumeStore } from "@/stores/resume-data-store";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
@@ -106,109 +106,121 @@ const styles = StyleSheet.create({
 });
 
 // Componente del PDF
-export const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.name}>{resumeData.personalInfo.name}</Text>
-          <Text style={styles.personDataInfo}>
-            {resumeData.personalInfo.location} • {resumeData.personalInfo.phone}{" "}
-            • {resumeData.personalInfo.email}
-          </Text>
-          <Text style={styles.contactInfo}>
-            {resumeData.personalInfo.links.map((link) => link.url).join(" • ")}
-          </Text>
-        </View>
+export const ResumePDF = () => {
+  const { resumeData } = useResumeStore();
 
-        {/* Summary */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Summary</Text>
-          <Text style={styles.text}>{resumeData.summary}</Text>
-        </View>
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header */}
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.name}>{resumeData.personalInfo.name}</Text>
+            <Text style={styles.personDataInfo}>
+              {resumeData.personalInfo.location} •{" "}
+              {resumeData.personalInfo.phone} • {resumeData.personalInfo.email}
+            </Text>
+            <Text style={styles.contactInfo}>
+              {resumeData.personalInfo.links
+                .map((link) => link.url)
+                .join(" • ")}
+            </Text>
+          </View>
 
-        {/* Work Experience */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Work Experience</Text>
-          {resumeData.experience.map((job, index) => (
-            <View key={index} style={{ marginBottom: 10 }}>
-              <View style={styles.jobHeader}>
-                <Text style={styles.jobTitle}>
-                  {job.position} {job.company && `| ${job.company}`}
-                </Text>
-                <Text style={styles.jobDate}>
-                  {job.periodStart
-                    ? new Date(job.periodStart).toLocaleDateString("en-US", {
-                        month: "long",
-                        year: "numeric",
-                      })
-                    : ""}{" "}
-                  {job.periodEnd
-                    ? `- ${new Date(job.periodEnd).toLocaleDateString("en-US", {
-                        month: "long",
-                        year: "numeric",
-                      })}`
-                    : "- Present"}
-                </Text>
+          {/* Summary */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Summary</Text>
+            <Text style={styles.text}>{resumeData.summary}</Text>
+          </View>
+
+          {/* Work Experience */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Work Experience</Text>
+            {resumeData.experience.map((job, index) => (
+              <View key={index} style={{ marginBottom: 10 }}>
+                <View style={styles.jobHeader}>
+                  <Text style={styles.jobTitle}>
+                    {job.position} {job.company && `| ${job.company}`}
+                  </Text>
+                  <Text style={styles.jobDate}>
+                    {job.periodStart
+                      ? new Date(job.periodStart).toLocaleDateString("en-US", {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : ""}{" "}
+                    {job.periodEnd
+                      ? `- ${new Date(job.periodEnd).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )}`
+                      : "- Present"}
+                  </Text>
+                </View>
+                <Text style={styles.jobDescription}>{job.description}</Text>
               </View>
-              <Text style={styles.jobDescription}>{job.description}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Education */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Education</Text>
-          {resumeData.education.map((edu, index) => (
-            <View key={index}>
-              <View style={styles.educationHeader}>
-                <Text style={styles.degree}>{edu.degree}</Text>
-                <Text style={styles.jobDate}>
-                  {edu.periodStart
-                    ? new Date(edu.periodStart).toLocaleDateString("en-US", {
-                        month: "long",
-                        year: "numeric",
-                      })
-                    : ""}{" "}
-                  {edu.periodEnd
-                    ? `- ${new Date(edu.periodEnd).toLocaleDateString("en-US", {
-                        month: "long",
-                        year: "numeric",
-                      })}`
-                    : ""}
-                </Text>
-              </View>
-              <Text style={styles.institution}>{edu.institution}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Additional Information */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Additional Information</Text>
-
-          {/* Technical Skills */}
-          <View style={styles.skillsContainer}>
-            <Text style={styles.skillCategory}>Technical Skills</Text>
-            {resumeData.skills.technical.map((category, index) => (
-              <Text key={index} style={styles.skillsList}>
-                • {category.category}: {category.skills.join(", ")}
-              </Text>
             ))}
           </View>
 
-          {/* Languages */}
-          <View style={styles.skillsContainer}>
-            <Text style={styles.skillCategory}>Languages</Text>
-            {resumeData.skills.languages.map((lang, index) => (
-              <Text key={index} style={styles.skillsList}>
-                • {lang.language}: {lang.level}
-              </Text>
+          {/* Education */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Education</Text>
+            {resumeData.education.map((edu, index) => (
+              <View key={index}>
+                <View style={styles.educationHeader}>
+                  <Text style={styles.degree}>{edu.degree}</Text>
+                  <Text style={styles.jobDate}>
+                    {edu.periodStart
+                      ? new Date(edu.periodStart).toLocaleDateString("en-US", {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : ""}{" "}
+                    {edu.periodEnd
+                      ? `- ${new Date(edu.periodEnd).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "long",
+                            year: "numeric",
+                          }
+                        )}`
+                      : ""}
+                  </Text>
+                </View>
+                <Text style={styles.institution}>{edu.institution}</Text>
+              </View>
             ))}
           </View>
+
+          {/* Additional Information */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Additional Information</Text>
+
+            {/* Technical Skills */}
+            <View style={styles.skillsContainer}>
+              <Text style={styles.skillCategory}>Technical Skills</Text>
+              {resumeData.skills.technical.map((category, index) => (
+                <Text key={index} style={styles.skillsList}>
+                  • {category.category}: {category.skills.join(", ")}
+                </Text>
+              ))}
+            </View>
+
+            {/* Languages */}
+            <View style={styles.skillsContainer}>
+              <Text style={styles.skillCategory}>Languages</Text>
+              {resumeData.skills.languages.map((lang, index) => (
+                <Text key={index} style={styles.skillsList}>
+                  • {lang.language}: {lang.level}
+                </Text>
+              ))}
+            </View>
+          </View>
         </View>
-      </View>
-    </Page>
-  </Document>
-);
+      </Page>
+    </Document>
+  );
+};
