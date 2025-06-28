@@ -28,7 +28,7 @@ export function SummarySection({
           rows={4}
           value={summary}
           onChange={(e) => {
-            onSummaryChange(e.target.value);
+            onSummaryChange(e.target.value.replace(/\n/g, "\n"));
           }}
           className="text-xs bg-secondary dark:bg-muted"
         />

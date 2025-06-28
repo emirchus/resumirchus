@@ -138,7 +138,9 @@ export default function ResumePreview({
               onClick={() => onSectionClick("summary")}
             >
               <h2 className="text-lg font-bold uppercase mb-2">Summary</h2>
-              <p className="text-sm">{data.summary}</p>
+              <p className="text-sm whitespace-pre-wrap">
+                {data.summary.replace(/\n/g, "\n")}
+              </p>
             </section>
             <hr className="border-t border-black my-4" />
           </>

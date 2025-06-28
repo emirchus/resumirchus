@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { fontSans, fontSerif, siteConfig } from "@/lib/config";
 import { Toaster } from "@/components/ui/sonner";
-
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -43,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={cn(fontSans.variable, "font-sans", fontSerif.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}

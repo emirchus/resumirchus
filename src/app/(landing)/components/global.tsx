@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ModeSwitcher } from "../../../components/mode-switch";
+import { ModeSwitcher } from "@/components/mode-switch";
 
 const menuItems = [
   { name: "Features", href: "/#features" },

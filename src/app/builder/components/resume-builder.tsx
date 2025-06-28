@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Download, FileImage, RotateCcw } from "lucide-react";
+import { Download, FileImage } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -33,13 +33,14 @@ import {
 } from "@/app/builder/components/sections/experience-education-sections";
 import { SkillsSection } from "@/app/builder/components/sections/skills-section";
 import dynamic from "next/dynamic";
-import { ModeSwitcher } from "@/components/mode-switch";
 import {
   resumeSelectors,
   useResumeSelector,
   useResumeStore,
 } from "@/stores/resume-data-store";
 import { ResumeData, TechnicalSkill } from "@/app/builder/types";
+import { ImportButton } from "@/app/builder/components/import-button";
+import { SettingButton } from "@/app/builder/components/settings";
 
 export default function ResumeBuilder() {
   const [activeTab, setActiveTab] = useState("personal");
@@ -53,7 +54,6 @@ export default function ResumeBuilder() {
   const skills = useResumeSelector(resumeSelectors.skills);
   const {
     updateSummary,
-    resetData,
     updateEducation,
     updateExperience,
     addLink,
@@ -113,30 +113,13 @@ export default function ResumeBuilder() {
     );
   };
 
-  // Función para reset con confirmación
-  const handleReset = () => {
-    const wasReset = resetData();
-    if (wasReset) {
-      setActiveTab("personal");
-    }
-  };
-
   return (
     <>
       <Sidebar variant="inset">
         <SidebarHeader className="p-4 border-b">
           <div className="flex justify-start items-center gap-2">
             <h1 className="text-lg font-bold flex-1">Resume Builder</h1>
-            <ModeSwitcher />
-            <Button
-              onClick={handleReset}
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:bg-red-50"
-            >
-              <RotateCcw className="h-3 w-3" />
-              Reset
-            </Button>
+            <SettingButton />
           </div>
           <div className="flex gap-1 mt-3">
             <PDFButton />
@@ -158,6 +141,7 @@ export default function ResumeBuilder() {
               <Download className="h-3 w-3" />
               JPG
             </Button>
+            <ImportButton />
           </div>
         </SidebarHeader>
 

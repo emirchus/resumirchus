@@ -101,6 +101,12 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      pdf-parse:
+        specifier: ^1.1.1
+        version: 1.1.1
+      pdfreader:
+        specifier: ^3.0.7
+        version: 3.0.7
       radix-ui:
         specifier: ^1.4.2
         version: 1.4.2(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -144,6 +150,9 @@ importers:
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.24
+      '@types/pdf-parse':
+        specifier: ^1.1.5
+        version: 1.1.5
       '@types/react':
         specifier: ^19.1.2
         version: 19.1.6
@@ -1361,6 +1370,9 @@ packages:
   '@types/node@22.15.24':
     resolution: {integrity: sha512-w9CZGm9RDjzTh/D+hFwlBJ3ziUaVw7oufKA3vOFSOZlzmW9AkZnfjPb+DLnrV6qtgL/LNmP0/2zBNCFHL3F0ng==}
 
+  '@types/pdf-parse@1.1.5':
+    resolution: {integrity: sha512-kBfrSXsloMnUJOKi25s3+hRmkycHfLK6A09eRGqF/N8BkQoPUmaCr+q8Cli5FnfohEz/rsv82zAiPz/LXtOGhA==}
+
   '@types/raf@3.4.3':
     resolution: {integrity: sha512-c4YAvMedbPZ5tEyxzQdMoOhhJ4RD3rngZIdwC2/qDN3d7JpEhB6fiBRKVY1lg5B7Wk+uPBjn5f39j1/2MY1oOw==}
 
@@ -2549,6 +2561,9 @@ packages:
       sass:
         optional: true
 
+  node-ensure@0.0.0:
+    resolution: {integrity: sha512-DRI60hzo2oKN1ma0ckc6nQWlHU69RH6xN0sjQTjMpChPfTYvKZdcQFfdYK2RWbJcKyUizSIy/l8OTGxMAM1QDw==}
+
   normalize-svg-path@1.1.0:
     resolution: {integrity: sha512-r9KHKG2UUeB5LoTouwDzBy2VxXlHsiM6fyLQvnJa0S5hrhzqElH/CH7TUGhT1fVvIYBIKf3OpY4YJ4CK+iaqHg==}
 
@@ -2623,6 +2638,21 @@ packages:
 
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
+
+  pdf-parse@1.1.1:
+    resolution: {integrity: sha512-v6ZJ/efsBpGrGGknjtq9J/oC8tZWq0KWL5vQrk2GlzLEQPUDB1ex+13Rmidl1neNN358Jn9EHZw5y07FFtaC7A==}
+    engines: {node: '>=6.8.1'}
+
+  pdf2json@3.1.4:
+    resolution: {integrity: sha512-rS+VapXpXZr+5lUpHmRh3ugXdFXp24p1RyG24yP1DMpqP4t0mrYNGpLtpSbWD42PnQ59GIXofxF+yWb7M+3THg==}
+    engines: {node: '>=18.12.1', npm: '>=8.19.2'}
+    hasBin: true
+    bundledDependencies:
+      - '@xmldom/xmldom'
+
+  pdfreader@3.0.7:
+    resolution: {integrity: sha512-68Htw7su6HDJGGKv9tkjilRyf8zaHulEKRCgCwx4FE8krcMB8iBtM46Smjjez0jFm45dUKYXJzThyLwCqfQlCQ==}
+    engines: {node: '>=14'}
 
   performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
@@ -4388,6 +4418,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/pdf-parse@1.1.5':
+    dependencies:
+      '@types/node': 22.15.24
+
   '@types/raf@3.4.3':
     optional: true
 
@@ -5720,6 +5754,8 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  node-ensure@0.0.0: {}
+
   normalize-svg-path@1.1.0:
     dependencies:
       svg-arc-to-cubic-bezier: 3.2.0
@@ -5804,6 +5840,19 @@ snapshots:
   path-key@3.1.1: {}
 
   path-parse@1.0.7: {}
+
+  pdf-parse@1.1.1:
+    dependencies:
+      debug: 3.2.7
+      node-ensure: 0.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  pdf2json@3.1.4: {}
+
+  pdfreader@3.0.7:
+    dependencies:
+      pdf2json: 3.1.4
 
   performance-now@2.1.0:
     optional: true

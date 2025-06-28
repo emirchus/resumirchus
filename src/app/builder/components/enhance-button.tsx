@@ -1,5 +1,6 @@
 "use client";
 
+import { enhanceSummaryAction } from "@/app/builder/actions/enhance-summary.action";
 import { RainbowButton } from "@/components/magicui/rainbow-button";
 import {
   resumeSelectors,
@@ -17,22 +18,18 @@ export const EnhanceButton = () => {
   const handleGenerateSummary = async () => {
     setIsGenerating(true);
     try {
-      const response = await fetch("/api/enhance", {
-        method: "POST",
-        body: JSON.stringify({ summary }),
-      });
-      const data = await response.json();
-      if (data.error) {
-        toast.error(data.error, {
-          description: `Sorry, you have reached the limit of 10 requests per 10 seconds. Please try again later.`,
-        });
-      } else {
-        updateSummary(data);
-        toast.success("Summary enhanced successfully");
-      }
+      const data = await enhanceSummaryAction(summary);
+      updateSummary(data);
+      toast.success("Summary enhanced successfully");
     } catch (error) {
       console.error(error);
-      toast.error("Error enhancing summary");
+      if (error instanceof Error && error.message === "Rate limit exceeded") {
+        toast.error("Rate limit exceeded", {
+          description: `Sorry, you have reached the limit of 10 requests per day. Please try again later.`,
+        });
+      } else {
+        toast.error("Error enhancing summary");
+      }
     } finally {
       setIsGenerating(false);
     }
